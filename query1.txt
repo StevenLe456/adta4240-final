@@ -1,0 +1,12 @@
+SELECT (SELECT AVG(s.Amplitude) 
+FROM `eeg.sample` 
+AS s
+INNER JOIN `eeg.patient` AS p ON p.PatientID = s.PatientID
+WHERE p.Diagnosis = "nkd")
+as healthy, 
+(SELECT AVG(s.Amplitude)
+FROM `eeg.sample`
+AS s
+INNER JOIN `eeg.patient` AS p ON p.PatientID = s.PatientID
+WHERE p.Diagnosis = "scz"
+) as schizophrenia

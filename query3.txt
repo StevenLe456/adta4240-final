@@ -1,0 +1,2 @@
+SELECT s.Time AS t, AVG(s.Amplitude) AS a FROM `eeg.sample` AS s INNER JOIN `eeg.patient` AS p ON p.PatientID = s.PatientID WHERE p.Diagnosis = "nkd" GROUP BY s.Time ORDER BY s.Time;
+SELECT s.Time AS t, AVG(s.Amplitude) AS a FROM `eeg.sample` AS s INNER JOIN `eeg.patient` AS p ON p.PatientID = s.PatientID WHERE p.Diagnosis = "scz" GROUP BY s.Time ORDER BY s.Time;

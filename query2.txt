@@ -1,0 +1,27 @@
+SELECT
+    nkd_channels.ChannelID,
+    ec.BrainRegion
+FROM
+    (SELECT
+        s.ChannelID,
+        AVG(s.Amplitude) as avg_nkd
+     FROM eeg.sample s
+     INNER JOIN eeg.patient p ON p.PatientID = s.PatientID
+     WHERE p.Diagnosis = 'nkd'
+     GROUP BY s.ChannelID
+    ) AS nkd_channels
+INNER JOIN
+    (SELECT
+        s.ChannelID,
+        AVG(s.Amplitude) as avg_scz
+     FROM eeg.sample s
+     INNER JOIN eeg.patient p ON p.PatientID = s.PatientID
+     WHERE p.Diagnosis = 'scz'
+     GROUP BY s.ChannelID
+    ) AS scz_channels
+ON nkd_channels.ChannelID = scz_channels.ChannelID
+INNER JOIN
+    eeg.channel ec
+ON nkd_channels.ChannelID = ec.`Channel ID`
+WHERE
+    nkd_channels.avg_nkd >= scz_channels.avg_scz;
